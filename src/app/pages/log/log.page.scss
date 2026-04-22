@@ -2,14 +2,59 @@
   font-size: 1.4rem;
   font-weight: 700;
   text-align: center;
-  margin: 1rem 0;
+  margin: 1rem 0 1.5rem;
   color: var(--ion-color-primary);
+}
+
+.meal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0.5rem 0.25rem;
+  border-bottom: 1px solid var(--ion-border-color);
+  margin-bottom: 0.25rem;
+  margin-top: 1rem;
+}
+
+.meal-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ion-color-medium);
+}
+
+.meal-stats {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.82rem;
+  color: var(--ion-color-medium);
+  flex-wrap: wrap;
+}
+
+.empty-section {
+  text-align: center;
+  color: var(--ion-color-medium);
+  font-size: 0.85rem;
+  padding: 0.5rem 0;
+  font-style: italic;
 }
 
 .empty {
   text-align: center;
   color: var(--ion-color-medium);
   margin-top: 3rem;
+}
+
+.swipe-hint {
+  text-align: center;
+  color: var(--ion-color-medium);
+  font-size: 0.8rem;
+  margin-top: 2rem;
+  opacity: 0.6;
 }
 
 ion-label h2 {
@@ -20,7 +65,7 @@ ion-label h2 {
 .kcal-line {
   color: var(--ion-color-medium);
   font-size: 0.85rem;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .macro-row {
@@ -40,4 +85,9 @@ ion-label h2 {
   &.protein { background: #00c853; }
   &.carbs { background: #2196f3; }
   &.fat { background: #f44336; color: #fff; }
+}
+
+.meal-select {
+  font-size: 0.8rem;
+  max-width: 120px;
 }

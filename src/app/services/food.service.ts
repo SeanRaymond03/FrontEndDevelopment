@@ -10,6 +10,7 @@ export interface FoodItem {
   protein: number;
   fat: number;
   carbs: number;
+  meal: 'Uncategorised' | 'Breakfast' | 'Lunch' | 'Dinner';
 }
 
 export interface UserGoals {
@@ -54,7 +55,11 @@ export class FoodService {
     log.push(item);
     await this.storage.set('food_log', log);
   }
-
+async updateMeal(index: number, meal: FoodItem['meal']): Promise<void> {
+  const log = await this.getLog();
+  log[index].meal = meal;
+  await this.storage.set('food_log', log);
+}
   async removeFromLog(index: number): Promise<void> {
     const log = await this.getLog();
     log.splice(index, 1);

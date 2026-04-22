@@ -72,32 +72,34 @@ export class SearchPage {
     this.photoUrl = image.dataUrl ?? null;
   }
 
-  async addFood(product: any, index: number) {
-    const quantity = this.quantities[index] || 100;
-    const n = product.nutriments;
-    const factor = quantity / 100;
-    const item: FoodItem = {
-      name: product.product_name,
-      calories: Math.round((n['energy-kcal_100g'] || 0) * factor),
-      protein: Math.round((n['proteins_100g'] || 0) * factor),
-      fat: Math.round((n['fat_100g'] || 0) * factor),
-      carbs: Math.round((n['carbohydrates_100g'] || 0) * factor),
-      quantity
-    };
-    await this.foodService.addToLog(item);
-    this.added.push(index);
-  }
+async addFood(product: any, index: number) {
+  const quantity = this.quantities[index] || 100;
+  const n = product.nutriments;
+  const factor = quantity / 100;
+  const item: FoodItem = {
+    name: product.product_name,
+    calories: Math.round((n['energy-kcal_100g'] || 0) * factor),
+    protein: Math.round((n['proteins_100g'] || 0) * factor),
+    fat: Math.round((n['fat_100g'] || 0) * factor),
+    carbs: Math.round((n['carbohydrates_100g'] || 0) * factor),
+    quantity,
+    meal: 'Uncategorised'
+  };
+  await this.foodService.addToLog(item);
+  this.added.push(index);
+}
 
-  async addCommonFood(food: CommonFood, index: number) {
-    const item: FoodItem = {
-      name: food.name,
-      calories: food.calories,
-      protein: food.protein,
-      fat: food.fat,
-      carbs: food.carbs,
-      quantity: food.serving
-    };
-    await this.foodService.addToLog(item);
-    this.commonAdded.push(index);
-  }
+async addCommonFood(food: CommonFood, index: number) {
+  const item: FoodItem = {
+    name: food.name,
+    calories: food.calories,
+    protein: food.protein,
+    fat: food.fat,
+    carbs: food.carbs,
+    quantity: food.serving,
+    meal: 'Uncategorised'
+  };
+  await this.foodService.addToLog(item);
+  this.commonAdded.push(index);
+}
 }
