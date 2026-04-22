@@ -33,34 +33,43 @@ export class DashboardPage {
     this.renderChart();
   }
 
-  renderChart() {
-    if (this.chart) {
-      this.chart.destroy();
-      this.chart = null;
-    }
-    setTimeout(() => {
-      const canvas = this.macroChartRef?.nativeElement;
-      if (!canvas) return;
-      this.chart = new Chart(canvas, {
-        type: 'doughnut',
-        data: {
-          labels: ['Protein', 'Fat', 'Carbs'],
-          datasets: [{
-            data: [this.macros.protein, this.macros.fat, this.macros.carbs],
-            backgroundColor: ['#00c853', '#f44336', '#2196f3'],
-            borderWidth: 0,
-          }]
-        },
-        options: {
-          cutout: '70%',
-          plugins: {
-            legend: { display: false },
-            tooltip: { enabled: true }
-          }
-        }
-      });
-    }, 100);
+renderChart() {
+  if (this.chart) {
+    this.chart.destroy();
+    this.chart = null;
   }
+  setTimeout(() => {
+    const canvas = this.macroChartRef?.nativeElement;
+    if (!canvas) return;
+    const total = this.macros.protein + this.macros.fat + this.macros.carbs;
+    const data = total === 0
+      ? [1, 1, 1]
+      : [this.macros.protein, this.macros.fat, this.macros.carbs];
+    const colors = total === 0
+      ? ['#2a2a2a', '#2a2a2a', '#2a2a2a']
+      : ['#00c853', '#f44336', '#2196f3'];
+
+    this.chart = new Chart(canvas, {
+      type: 'doughnut',
+      data: {
+        labels: ['Protein', 'Fat', 'Carbs'],
+        datasets: [{
+          data,
+          backgroundColor: colors,
+          borderWidth: total === 0 ? 1 : 0,
+          borderColor: total === 0 ? '#444' : undefined,
+        }]
+      },
+      options: {
+        cutout: '70%',
+        plugins: {
+          legend: { display: false },
+          tooltip: { enabled: total > 0 }
+        }
+      }
+    });
+  }, 300);
+}
 
   get progress() {
     return Math.min(this.totalCalories / this.dailyGoal, 1);
