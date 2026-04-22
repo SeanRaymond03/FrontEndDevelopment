@@ -10,20 +10,34 @@
   text-align: center;
   color: var(--ion-color-medium);
   margin-top: 3rem;
-  font-size: 1rem;
-}
-
-ion-item {
-  --border-radius: 10px;
-  margin-bottom: 0.5rem;
-  --inner-padding-end: 0;
 }
 
 ion-label h2 {
   font-weight: 600;
+  margin-bottom: 2px;
 }
 
-ion-label p {
+.kcal-line {
   color: var(--ion-color-medium);
   font-size: 0.85rem;
+  margin-bottom: 6px;
+}
+
+.macro-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.macro-tag {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  color: #000;
+
+  &.protein { background: #00c853; }
+  &.carbs { background: #2196f3; }
+  &.fat { background: #f44336; color: #fff; }
 }

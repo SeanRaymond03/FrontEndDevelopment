@@ -25,7 +25,16 @@ export class FoodService {
   private apiUrl = 'https://world.openfoodfacts.org/cgi/search.pl';
 
   constructor(private http: HttpClient, private storage: Storage) {
-    this.storage.create();
+    this.storage.create().then(() => this.checkDailyReset());
+  }
+
+  private async checkDailyReset() {
+    const today = new Date().toDateString();
+    const lastDate = await this.storage.get('last_log_date');
+    if (lastDate !== today) {
+      await this.storage.set('food_log', []);
+      await this.storage.set('last_log_date', today);
+    }
   }
 
   searchFood(query: string): Observable<any[]> {

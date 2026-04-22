@@ -1,11 +1,11 @@
 <ion-header>
-  <ion-toolbar color="primary">
+  <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/dashboard"></ion-back-button>
     </ion-buttons>
     <ion-title>Search Food</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="takePhoto()" fill="clear">📷</ion-button>
+      <ion-button (click)="takePhoto()" fill="clear">Camera</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -14,7 +14,6 @@
   <ion-searchbar
     [(ngModel)]="searchQuery"
     placeholder="Search food..."
-    (keyup.enter)="search()"
     debounce="0">
   </ion-searchbar>
 
@@ -27,6 +26,7 @@
   <ion-spinner *ngIf="loading" name="crescent" class="ion-margin"></ion-spinner>
 
   <ion-list *ngIf="results.length > 0">
+    <ion-list-header>Results</ion-list-header>
     <ion-item *ngFor="let product of results; let i = index">
       <ion-label>
         <h2>{{ product.product_name }}</h2>
@@ -39,6 +39,24 @@
       </ion-label>
       <ion-button slot="end" (click)="addFood(product, i)" [disabled]="added.includes(i)" fill="outline">
         {{ added.includes(i) ? 'Added' : 'Add' }}
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
+  <ion-list *ngIf="results.length === 0 && !loading">
+    <ion-list-header>Common Foods</ion-list-header>
+    <ion-item *ngFor="let food of commonFoods; let i = index">
+      <ion-label>
+        <h2>{{ food.name }}</h2>
+        <p>{{ food.calories }} kcal · {{ food.serving }}g</p>
+        <div class="macro-row">
+          <span class="macro-tag protein">P {{ food.protein }}g</span>
+          <span class="macro-tag carbs">C {{ food.carbs }}g</span>
+          <span class="macro-tag fat">F {{ food.fat }}g</span>
+        </div>
+      </ion-label>
+      <ion-button slot="end" (click)="addCommonFood(food, i)" [disabled]="commonAdded.includes(i)" fill="outline">
+        {{ commonAdded.includes(i) ? 'Added' : 'Add' }}
       </ion-button>
     </ion-item>
   </ion-list>

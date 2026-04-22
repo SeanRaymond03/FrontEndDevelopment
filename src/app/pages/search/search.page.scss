@@ -30,3 +30,30 @@
   color: var(--ion-text-color);
   font-size: 0.9rem;
 }
+
+.macro-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.macro-tag {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  color: #000;
+
+  &.protein { background: #00c853; }
+  &.carbs { background: #2196f3; }
+  &.fat { background: #f44336; color: #fff; }
+}
+
+ion-list-header {
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ion-color-medium);
+}
