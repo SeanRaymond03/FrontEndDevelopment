@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/dashboard"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Settings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Body Stats</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="stacked">Bodyweight (kg)</ion-label>
+        <ion-input type="number" [(ngModel)]="goals.weight" (ionChange)="onWeightChange()"></ion-input>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Daily Goals</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="stacked">Calories (kcal)</ion-label>
+        <ion-input type="number" [(ngModel)]="goals.calories"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Protein (g)</ion-label>
+        <ion-input type="number" [(ngModel)]="goals.protein"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Carbs (g)</ion-label>
+        <ion-input type="number" [(ngModel)]="goals.carbs"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Fat (g)</ion-label>
+        <ion-input type="number" [(ngModel)]="goals.fat"></ion-input>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button expand="block" (click)="save()" class="ion-margin-top">
+    {{ saved ? 'Saved ✓' : 'Save Goals' }}
+  </ion-button>
+</ion-content>

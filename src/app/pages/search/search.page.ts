@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonSearchbar, IonList, IonItem, IonLabel, IonButton, IonSpinner, IonBackButton, IonButtons, IonInput, IonThumbnail, IonImg } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonSearchbar, IonList, IonItem, IonLabel, IonButton, IonSpinner, IonBackButton, IonButtons } from '@ionic/angular/standalone';
 import { FoodService, FoodItem } from '../../services/food.service';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
@@ -10,7 +10,7 @@ import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
   templateUrl: './search.page.html',
   styleUrls: ['./search.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, IonContent, IonHeader, IonTitle, IonToolbar, IonSearchbar, IonList, IonItem, IonLabel, IonButton, IonSpinner, IonBackButton, IonButtons, IonInput, IonThumbnail, IonImg],
+  imports: [CommonModule, FormsModule, IonContent, IonHeader, IonTitle, IonToolbar, IonSearchbar, IonList, IonItem, IonLabel, IonButton, IonSpinner, IonBackButton, IonButtons],
 })
 export class SearchPage {
   searchQuery = '';
@@ -49,10 +49,14 @@ export class SearchPage {
 
   async addFood(product: any, index: number) {
     const quantity = this.quantities[index] || 100;
-    const caloriesPer100 = product.nutriments['energy-kcal_100g'];
+    const n = product.nutriments;
+    const factor = quantity / 100;
     const item: FoodItem = {
       name: product.product_name,
-      calories: Math.round((caloriesPer100 * quantity) / 100),
+      calories: Math.round((n['energy-kcal_100g'] || 0) * factor),
+      protein: Math.round((n['proteins_100g'] || 0) * factor),
+      fat: Math.round((n['fat_100g'] || 0) * factor),
+      carbs: Math.round((n['carbohydrates_100g'] || 0) * factor),
       quantity
     };
     await this.foodService.addToLog(item);

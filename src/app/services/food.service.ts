@@ -7,6 +7,17 @@ export interface FoodItem {
   name: string;
   calories: number;
   quantity: number;
+  protein: number;
+  fat: number;
+  carbs: number;
+}
+
+export interface UserGoals {
+  calories: number;
+  protein: number;
+  fat: number;
+  carbs: number;
+  weight: number;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -19,7 +30,9 @@ export class FoodService {
 
   searchFood(query: string): Observable<any[]> {
     return this.http.get<any>(`${this.apiUrl}?search_terms=${query}&json=true&page_size=20`).pipe(
-      map(res => res.products.filter((p: any) => p.product_name && p.nutriments?.['energy-kcal_100g']))
+      map(res => res.products.filter((p: any) =>
+        p.product_name && p.nutriments?.['energy-kcal_100g']
+      ))
     );
   }
 
@@ -46,5 +59,28 @@ export class FoodService {
   async getTotalCalories(): Promise<number> {
     const log = await this.getLog();
     return log.reduce((sum, item) => sum + item.calories, 0);
+  }
+
+  async getMacroTotals(): Promise<{ protein: number; fat: number; carbs: number }> {
+    const log = await this.getLog();
+    return {
+      protein: log.reduce((sum, item) => sum + item.protein, 0),
+      fat: log.reduce((sum, item) => sum + item.fat, 0),
+      carbs: log.reduce((sum, item) => sum + item.carbs, 0),
+    };
+  }
+
+  async getUserGoals(): Promise<UserGoals> {
+    return (await this.storage.get('user_goals')) || {
+      calories: 2000,
+      protein: 150,
+      fat: 65,
+      carbs: 250,
+      weight: 75
+    };
+  }
+
+  async saveUserGoals(goals: UserGoals): Promise<void> {
+    await this.storage.set('user_goals', goals);
   }
 }

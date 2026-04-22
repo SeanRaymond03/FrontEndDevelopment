@@ -1,6 +1,9 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>🔥 CalTrack</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/settings" fill="clear">⚙️</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -12,6 +15,46 @@
       <p class="label">kcal</p>
       <ion-progress-bar [value]="progress" color="primary"></ion-progress-bar>
       <p class="remaining">{{ remaining }} kcal remaining of {{ dailyGoal }}</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-content>
+      <p class="label">Macros Today</p>
+      <div class="macro-chart-row">
+        <div class="chart-wrap">
+          <canvas #macroChart></canvas>
+        </div>
+        <div class="macro-legend">
+          <div class="macro-item">
+            <span class="dot protein"></span>
+            <div class="macro-detail">
+              <span class="macro-name">Protein</span>
+              <span class="macro-val">{{ macros.protein }}g</span>
+              <span class="macro-goal">/ {{ goals.protein }}g</span>
+              <span class="macro-pct">{{ macroPercent(macros.protein) }}%</span>
+            </div>
+          </div>
+          <div class="macro-item">
+            <span class="dot fat"></span>
+            <div class="macro-detail">
+              <span class="macro-name">Fat</span>
+              <span class="macro-val">{{ macros.fat }}g</span>
+              <span class="macro-goal">/ {{ goals.fat }}g</span>
+              <span class="macro-pct">{{ macroPercent(macros.fat) }}%</span>
+            </div>
+          </div>
+          <div class="macro-item">
+            <span class="dot carbs"></span>
+            <div class="macro-detail">
+              <span class="macro-name">Carbs</span>
+              <span class="macro-val">{{ macros.carbs }}g</span>
+              <span class="macro-goal">/ {{ goals.carbs }}g</span>
+              <span class="macro-pct">{{ macroPercent(macros.carbs) }}%</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </ion-card-content>
   </ion-card>
 
