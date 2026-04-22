@@ -1,19 +1,41 @@
+ion-card {
+  border-radius: 16px;
+  border: 1px solid var(--ion-border-color);
+  margin-bottom: 1.5rem;
+}
+
 .calories-display {
-  font-size: 4rem;
+  font-size: 5rem;
   font-weight: 700;
   text-align: center;
-  margin: 0;
+  color: var(--ion-color-primary);
+  margin: 0.5rem 0 0;
+  line-height: 1;
 }
 
 .label {
   text-align: center;
   color: var(--ion-color-medium);
-  margin-bottom: 1rem;
+  margin: 0.4rem 0 1.2rem;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .remaining {
   text-align: center;
-  margin-top: 0.5rem;
+  margin-top: 0.75rem;
   font-size: 0.9rem;
   color: var(--ion-color-medium);
+}
+
+ion-progress-bar {
+  height: 8px;
+  border-radius: 4px;
+}
+
+ion-button {
+  --border-radius: 10px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
 }

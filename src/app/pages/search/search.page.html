@@ -4,6 +4,9 @@
       <ion-back-button defaultHref="/dashboard"></ion-back-button>
     </ion-buttons>
     <ion-title>Search Food</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="takePhoto()" fill="clear">📷</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -17,6 +20,10 @@
 
   <ion-button expand="block" (click)="search()">Search</ion-button>
 
+  <div *ngIf="photoUrl" class="photo-preview">
+    <img [src]="photoUrl" alt="Food photo" />
+  </div>
+
   <ion-spinner *ngIf="loading" name="crescent" class="ion-margin"></ion-spinner>
 
   <ion-list *ngIf="results.length > 0">
@@ -24,6 +31,11 @@
       <ion-label>
         <h2>{{ product.product_name }}</h2>
         <p>{{ product.nutriments['energy-kcal_100g'] | number:'1.0-0' }} kcal per 100g</p>
+        <div class="quantity-row">
+          <label>Quantity (g):</label>
+          <input type="number" [(ngModel)]="quantities[i]" min="1" class="qty-input" />
+          <span>= {{ (product.nutriments['energy-kcal_100g'] * quantities[i] / 100) | number:'1.0-0' }} kcal</span>
+        </div>
       </ion-label>
       <ion-button slot="end" (click)="addFood(product, i)" [disabled]="added.includes(i)" fill="outline">
         {{ added.includes(i) ? 'Added' : 'Add' }}
