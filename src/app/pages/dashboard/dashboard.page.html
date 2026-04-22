@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>CalTrack</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-content>
+      <h1 class="calories-display">{{ totalCalories }}</h1>
+      <p class="label">kcal consumed today</p>
+      <ion-progress-bar [value]="progress" color="primary"></ion-progress-bar>
+      <p class="remaining">{{ remaining }} kcal remaining of {{ dailyGoal }}</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button expand="block" routerLink="/search" class="ion-margin-top">Search Food</ion-button>
+  <ion-button expand="block" routerLink="/log" fill="outline" class="ion-margin-top">View Log</ion-button>
+</ion-content>
