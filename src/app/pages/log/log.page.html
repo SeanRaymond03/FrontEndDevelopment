@@ -13,7 +13,10 @@
 <ion-content class="ion-padding">
   <p class="total">Total: {{ totalCalories }} kcal</p>
 
-  <div *ngFor="let section of meals">
+  <div *ngFor="let section of meals"
+       class="meal-zone"
+       (dragover)="onDragOver($event)"
+       (drop)="onDrop(section.name)">
     <div class="meal-header">
       <span class="meal-name">{{ section.name }}</span>
       <span class="meal-stats">
@@ -26,7 +29,7 @@
 
     <ion-list *ngIf="section.items.length > 0">
       <ion-item-sliding *ngFor="let entry of section.items">
-        <ion-item>
+        <ion-item draggable="true" (dragstart)="onDragStart(entry.index)" class="draggable-item">
           <ion-label>
             <h2>{{ entry.item.name }}</h2>
             <p class="kcal-line">{{ entry.item.calories }} kcal · {{ entry.item.quantity }}g</p>
@@ -36,17 +39,6 @@
               <span class="macro-tag fat">F {{ entry.item.fat }}g</span>
             </div>
           </ion-label>
-          <ion-select
-            slot="end"
-            [value]="entry.item.meal || 'Uncategorised'"
-            (ionChange)="changeMeal(entry.index, $event.detail.value)"
-            interface="popover"
-            class="meal-select">
-            <ion-select-option value="Uncategorised">Uncategorised</ion-select-option>
-            <ion-select-option value="Breakfast">Breakfast</ion-select-option>
-            <ion-select-option value="Lunch">Lunch</ion-select-option>
-            <ion-select-option value="Dinner">Dinner</ion-select-option>
-          </ion-select>
         </ion-item>
         <ion-item-options side="end">
           <ion-item-option color="danger" (click)="remove(entry.index)">Delete</ion-item-option>
@@ -54,10 +46,61 @@
       </ion-item-sliding>
     </ion-list>
 
-    <p *ngIf="section.items.length === 0" class="empty-section">No items</p>
+    <p *ngIf="section.items.length === 0" class="empty-section">Drop food here</p>
   </div>
 
-  <p *ngIf="log.length === 0" class="empty">No food logged yet.</p>
+  <div class="section-divider"></div>
+
+  <div class="workout-section">
+    <h3 class="workout-log-title">Log Workout</h3>
+
+    <div class="workout-select-row">
+      <select [(ngModel)]="selectedBodyPart" (change)="onBodyPartChange()" class="workout-select">
+        <option value="">Body Part</option>
+        <option *ngFor="let part of bodyParts" [value]="part">{{ part | titlecase }}</option>
+      </select>
+
+      <ion-spinner *ngIf="loadingExercises" name="crescent" class="inline-spinner"></ion-spinner>
+
+      <select *ngIf="exercises.length > 0 && !loadingExercises" [(ngModel)]="selectedExercise" class="workout-select exercise-select">
+        <option value="">Exercise</option>
+        <option *ngFor="let ex of exercises" [value]="ex.name">{{ ex.name | titlecase }}</option>
+      </select>
+    </div>
+
+    <div *ngIf="selectedExercise" class="sets-container">
+      <div class="set-row">
+        <input type="number" [(ngModel)]="currentSet.sets" placeholder="Sets" class="set-input" min="1"/>
+        <span class="set-unit">sets</span>
+        <input type="number" [(ngModel)]="currentSet.reps" placeholder="Reps" class="set-input" min="0"/>
+        <span class="set-unit">reps</span>
+        <input type="number" [(ngModel)]="currentSet.weight" placeholder="kg" class="set-input" min="0"/>
+        <span class="set-unit">kg</span>
+      </div>
+      <div class="workout-actions">
+        <button class="save-workout-btn" (click)="saveWorkout()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="workoutDays.length > 0" class="workout-log">
+    <h3 class="workout-log-title">Workout History</h3>
+    <div *ngFor="let day of workoutDays" class="day-group">
+      <div class="workout-entry-card">
+        <div class="day-label">{{ day.date }}</div>
+        <div *ngFor="let w of day.entries" class="workout-entry-row">
+          <div class="workout-entry-header">
+            <span class="workout-name">{{ w.exerciseName | titlecase }}</span>
+            <button class="delete-workout-btn" (click)="deleteWorkout(w.id)">✕</button>
+          </div>
+          <p class="workout-part">{{ w.bodyPart | titlecase }}</p>
+          <div *ngFor="let s of w.sets" class="workout-set-line">
+            {{ s.sets }} sets · {{ s.reps }} reps · {{ s.weight }}kg
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <p class="swipe-hint">← Drag Left to Delete ←</p>
 </ion-content>

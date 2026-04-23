@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-title>🔥 CalTrack</ion-title>
     <ion-buttons slot="end">
-      <ion-button routerLink="/settings" fill="clear">Settings⚙️</ion-button>
+      <ion-button routerLink="/settings" fill="clear">Settings</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -58,10 +58,27 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-button expand="block" routerLink="/search" class="ion-margin-top">
-    Search Food
-  </ion-button>
-  <ion-button expand="block" routerLink="/log" fill="outline" class="ion-margin-top">
-    View Log
-  </ion-button>
+<ion-card>
+  <ion-card-content>
+    <p class="label">{{ calendarWeeks[0]?.[0]?.date | date:'MMMM yyyy' }}</p>
+    <div class="github-calendar">
+      <div *ngFor="let week of calendarWeeks" class="github-row">
+        <div *ngFor="let day of week"
+             class="github-cell"
+             [class.gym]="day.type === 'gym'"
+             [class.rest]="day.type === 'rest'"
+             [class.empty]="day.type === 'future'"
+             [title]="day.type !== 'future' ? day.date.toDateString() : ''">
+        </div>
+      </div>
+    </div>
+    <div class="calendar-legend">
+      <span class="legend-item"><span class="legend-box gym"></span> Gym</span>
+      <span class="legend-item"><span class="legend-box rest"></span> Rest</span>
+    </div>
+  </ion-card-content>
+</ion-card>
+
+  <ion-button expand="block" routerLink="/search" class="ion-margin-top">Search Food</ion-button>
+  <ion-button expand="block" routerLink="/log" fill="outline" class="ion-margin-top">View Log</ion-button>
 </ion-content>

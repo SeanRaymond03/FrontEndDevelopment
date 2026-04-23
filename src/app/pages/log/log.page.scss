@@ -6,6 +6,15 @@
   color: var(--ion-color-primary);
 }
 
+.meal-zone {
+  border: 1px dashed transparent;
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 0.5rem;
+  transition: border-color 0.2s;
+  &:hover { border-color: var(--ion-color-medium); }
+}
+
 .meal-header {
   display: flex;
   align-items: center;
@@ -15,7 +24,7 @@
   padding: 0.5rem 0.25rem;
   border-bottom: 1px solid var(--ion-border-color);
   margin-bottom: 0.25rem;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 }
 
 .meal-name {
@@ -35,18 +44,181 @@
   flex-wrap: wrap;
 }
 
+.draggable-item {
+  cursor: grab;
+  &:active { cursor: grabbing; }
+}
+
 .empty-section {
   text-align: center;
   color: var(--ion-color-medium);
   font-size: 0.85rem;
-  padding: 0.5rem 0;
+  padding: 0.75rem 0;
   font-style: italic;
+  opacity: 0.6;
 }
 
-.empty {
-  text-align: center;
+.section-divider {
+  height: 1px;
+  background: var(--ion-border-color);
+  margin: 1.5rem 0;
+}
+
+.workout-section {
+  margin-bottom: 1.5rem;
+}
+
+.workout-log-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   color: var(--ion-color-medium);
-  margin-top: 3rem;
+  margin-bottom: 0.75rem;
+}
+
+.workout-select-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.workout-select {
+  background: #1a1a1a;
+  color: var(--ion-text-color);
+  border: 1px solid var(--ion-color-medium);
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 0.85rem;
+  flex: 1;
+  min-width: 120px;
+}
+
+.exercise-select {
+  flex: 2;
+}
+
+.inline-spinner {
+  width: 20px;
+  height: 20px;
+}
+
+.sets-container {
+  margin-top: 0.5rem;
+}
+
+.set-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.set-input {
+  width: 65px;
+  padding: 4px 8px;
+  border: 1px solid var(--ion-color-medium);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ion-text-color);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.set-unit {
+  font-size: 0.8rem;
+  color: var(--ion-color-medium);
+}
+
+.workout-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.save-workout-btn {
+  background: var(--ion-color-primary);
+  border: none;
+  color: #000;
+  border-radius: 6px;
+  padding: 6px 18px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.workout-log {
+  margin-top: 1.5rem;
+}
+
+.day-group {
+  margin-bottom: 1.5rem;
+}
+
+.workout-entry-card {
+  background: #1a1a1a;
+  border: 1px solid var(--ion-border-color);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+}
+
+.day-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ion-color-primary);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--ion-border-color);
+}
+
+.workout-entry-row {
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.workout-entry-row:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+
+}
+
+.workout-entry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2px;
+}
+
+.workout-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.workout-part {
+  font-size: 0.8rem;
+  color: var(--ion-color-medium);
+  margin: 2px 0 6px;
+}
+
+.workout-set-line {
+  font-size: 0.85rem;
+  color: var(--ion-color-medium);
+  padding: 2px 0;
+}
+
+.delete-workout-btn {
+  background: transparent;
+  border: none;
+  color: #f44336;
+  cursor: pointer;
+  font-size: 1rem;
 }
 
 .swipe-hint {
@@ -54,12 +226,8 @@
   color: var(--ion-color-medium);
   font-size: 0.8rem;
   margin-top: 2rem;
+  margin-bottom: 1rem;
   opacity: 0.6;
-}
-
-ion-label h2 {
-  font-weight: 600;
-  margin-bottom: 2px;
 }
 
 .kcal-line {
@@ -79,15 +247,4 @@ ion-label h2 {
   font-size: 0.75rem;
   font-weight: 600;
   padding: 2px 8px;
-  border-radius: 4px;
-  color: #000;
-
-  &.protein { background: #00c853; }
-  &.carbs { background: #2196f3; }
-  &.fat { background: #f44336; color: #fff; }
-}
-
-.meal-select {
-  font-size: 0.8rem;
-  max-width: 120px;
 }
