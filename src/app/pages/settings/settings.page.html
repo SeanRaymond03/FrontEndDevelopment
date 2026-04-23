@@ -44,6 +44,26 @@
     </ion-card-content>
   </ion-card>
 
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Appearance</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label>Dark Mode</ion-label>
+        <ion-toggle [(ngModel)]="darkMode" (ionChange)="toggleDarkMode()"></ion-toggle>
+      </ion-item>
+      <ion-item>
+        <ion-label>Font Size</ion-label>
+        <ion-select [(ngModel)]="fontSize" (ionChange)="onFontSizeChange()" interface="popover">
+          <ion-select-option value="small">Small</ion-select-option>
+          <ion-select-option value="medium">Medium</ion-select-option>
+          <ion-select-option value="large">Large</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
   <ion-button expand="block" (click)="save()" class="ion-margin-top">
     {{ saved ? 'Saved ✓' : 'Save Goals' }}
   </ion-button>

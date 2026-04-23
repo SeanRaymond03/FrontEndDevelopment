@@ -104,11 +104,38 @@ ion-button {
   color: var(--ion-color-medium);
 }
 
-.month-calendar {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 4px;
-  margin-bottom: 1rem;
+.streak-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 1.25rem;
+}
+
+.streak-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.streak-val {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--ion-color-primary);
+}
+
+.streak-label {
+  font-size: 0.75rem;
+  color: var(--ion-color-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.streak-divider {
+  width: 1px;
+  height: 40px;
+  background: var(--ion-border-color);
 }
 
 .github-calendar {
@@ -130,21 +157,9 @@ ion-button {
   background: #2a2a2a;
   border: 1px solid #444;
   flex-shrink: 0;
-
-  &.gym {
-    background: #00c853;
-    border-color: #00c853;
-  }
-
-  &.rest {
-    background: #2a2a2a;
-    border-color: #444;
-  }
-
-  &.empty {
-    background: transparent;
-    border-color: transparent;
-  }
+  &.gym { background: #00c853; border-color: #00c853; }
+  &.rest { background: #2a2a2a; border-color: #444; }
+  &.empty { background: transparent; border-color: transparent; }
 }
 
 .calendar-legend {

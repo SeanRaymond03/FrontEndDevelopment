@@ -58,26 +58,37 @@
     </ion-card-content>
   </ion-card>
 
-<ion-card>
-  <ion-card-content>
-    <p class="label">{{ calendarWeeks[0]?.[0]?.date | date:'MMMM yyyy' }}</p>
-    <div class="github-calendar">
-      <div *ngFor="let week of calendarWeeks" class="github-row">
-        <div *ngFor="let day of week"
-             class="github-cell"
-             [class.gym]="day.type === 'gym'"
-             [class.rest]="day.type === 'rest'"
-             [class.empty]="day.type === 'future'"
-             [title]="day.type !== 'future' ? day.date.toDateString() : ''">
+  <ion-card>
+    <ion-card-content>
+      <p class="label">{{ calendarWeeks[0]?.[0]?.date | date:'MMMM yyyy' }}</p>
+      <div class="streak-row">
+        <div class="streak-item">
+          <span class="streak-val">{{ currentStreak }}</span>
+          <span class="streak-label">Current Streak</span>
+        </div>
+        <div class="streak-divider"></div>
+        <div class="streak-item">
+          <span class="streak-val">{{ bestStreak }}</span>
+          <span class="streak-label">Best Streak</span>
         </div>
       </div>
-    </div>
-    <div class="calendar-legend">
-      <span class="legend-item"><span class="legend-box gym"></span> Gym</span>
-      <span class="legend-item"><span class="legend-box rest"></span> Rest</span>
-    </div>
-  </ion-card-content>
-</ion-card>
+      <div class="github-calendar">
+        <div *ngFor="let week of calendarWeeks" class="github-row">
+          <div *ngFor="let day of week"
+               class="github-cell"
+               [class.gym]="day.type === 'gym'"
+               [class.rest]="day.type === 'rest'"
+               [class.empty]="day.type === 'future'"
+               [title]="day.type !== 'future' ? day.date.toDateString() : ''">
+          </div>
+        </div>
+      </div>
+      <div class="calendar-legend">
+        <span class="legend-item"><span class="legend-box gym"></span> Gym</span>
+        <span class="legend-item"><span class="legend-box rest"></span> Rest</span>
+      </div>
+    </ion-card-content>
+  </ion-card>
 
   <ion-button expand="block" routerLink="/search" class="ion-margin-top">Search Food</ion-button>
   <ion-button expand="block" routerLink="/log" fill="outline" class="ion-margin-top">View Log</ion-button>

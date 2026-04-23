@@ -27,8 +27,9 @@ export class DashboardPage {
   goals: UserGoals = { calories: 2000, protein: 150, fat: 65, carbs: 250, weight: 75 };
   macros = { protein: 0, fat: 0, carbs: 0 };
   private chart: Chart | null = null;
-
   calendarWeeks: { date: Date; type: 'gym' | 'rest' | 'future' }[][] = [];
+  currentStreak = 0;
+  bestStreak = 0;
 
   constructor(
     private foodService: FoodService,
@@ -42,42 +43,45 @@ export class DashboardPage {
     this.macros = await this.foodService.getMacroTotals();
     this.renderChart();
     await this.buildCalendar();
+    const streaks = await this.workoutService.getStreaks();
+    this.currentStreak = streaks.current;
+    this.bestStreak = streaks.best;
   }
 
-async buildCalendar() {
-  const workouts = await this.workoutService.getAllWorkouts();
-  const gymDates = new Set(workouts.map(w => w.date));
+  async buildCalendar() {
+    const workouts = await this.workoutService.getAllWorkouts();
+    const gymDates = new Set(workouts.map(w => w.date));
 
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth();
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-  const days: { date: Date; type: 'gym' | 'rest' | 'future' }[] = [];
+    const days: { date: Date; type: 'gym' | 'rest' | 'future' }[] = [];
 
-  for (let i = 1; i <= daysInMonth; i++) {
-    const d = new Date(year, month, i);
-    const isFuture = d > today;
-    days.push({
-      date: d,
-      type: isFuture ? 'rest' : gymDates.has(d.toDateString()) ? 'gym' : 'rest'
-    });
+    for (let i = 1; i <= daysInMonth; i++) {
+      const d = new Date(year, month, i);
+      const isFuture = d > today;
+      days.push({
+        date: d,
+        type: isFuture ? 'rest' : gymDates.has(d.toDateString()) ? 'gym' : 'rest'
+      });
+    }
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const offset = firstDay === 0 ? 6 : firstDay - 1;
+    const padded: { date: Date; type: 'gym' | 'rest' | 'future' }[] = [
+      ...Array(offset).fill({ date: new Date(), type: 'future' as const }),
+      ...days
+    ];
+
+    const weeks: { date: Date; type: 'gym' | 'rest' | 'future' }[][] = [];
+    for (let i = 0; i < padded.length; i += 7) {
+      weeks.push(padded.slice(i, i + 7));
+    }
+
+    this.calendarWeeks = weeks;
   }
-
-  const firstDay = new Date(year, month, 1).getDay();
-  const offset = firstDay === 0 ? 6 : firstDay - 1;
-  const padded: { date: Date; type: 'gym' | 'rest' | 'future' }[] = [
-    ...Array(offset).fill({ date: new Date(), type: 'future' }),
-    ...days
-  ];
-
-  const weeks: { date: Date; type: 'gym' | 'rest' | 'future' }[][] = [];
-  for (let i = 0; i < padded.length; i += 7) {
-    weeks.push(padded.slice(i, i + 7));
-  }
-
-  this.calendarWeeks = weeks;
-}
 
   renderChart() {
     if (this.chart) {
@@ -103,22 +107,11 @@ async buildCalendar() {
         },
         options: {
           cutout: '70%',
-          plugins: {
-            legend: { display: false },
-            tooltip: { enabled: total > 0 }
-          }
+          plugins: { legend: { display: false }, tooltip: { enabled: total > 0 } }
         }
       });
     }, 300);
   }
-
-getStartOffset(): number[] {
-  if (!this.calendarWeeks[0]?.length) return [];
-  let day = this.calendarWeeks[0][0].date.getDay();
-  day = day === 0 ? 6 : day - 1;
-  return Array(day).fill(0);
-}
-
 
   get progress() { return Math.min(this.totalCalories / this.dailyGoal, 1); }
   get remaining() { return Math.max(this.dailyGoal - this.totalCalories, 0); }

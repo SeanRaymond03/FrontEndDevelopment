@@ -54,6 +54,13 @@
   <div class="workout-section">
     <h3 class="workout-log-title">Log Workout</h3>
 
+    <div class="location-banner">
+      <ion-spinner *ngIf="loadingLocation" name="crescent" class="inline-spinner"></ion-spinner>
+      <p *ngIf="!loadingLocation && nearbyLocation" class="location-text">
+        📍 You are near: <strong>{{ nearbyLocation }}</strong>
+      </p>
+    </div>
+
     <div class="workout-select-row">
       <select [(ngModel)]="selectedBodyPart" (change)="onBodyPartChange()" class="workout-select">
         <option value="">Body Part</option>
@@ -78,7 +85,9 @@
         <span class="set-unit">kg</span>
       </div>
       <div class="workout-actions">
-        <button class="save-workout-btn" (click)="saveWorkout()">Save</button>
+        <button class="save-workout-btn" (click)="saveWorkout()" [disabled]="savingWorkout">
+          {{ savingWorkout ? 'Saving...' : 'Save' }}
+        </button>
       </div>
     </div>
   </div>
@@ -94,6 +103,7 @@
             <button class="delete-workout-btn" (click)="deleteWorkout(w.id)">✕</button>
           </div>
           <p class="workout-part">{{ w.bodyPart | titlecase }}</p>
+          <p *ngIf="w.location" class="workout-location">📍 {{ w.location }}</p>
           <div *ngFor="let s of w.sets" class="workout-set-line">
             {{ s.sets }} sets · {{ s.reps }} reps · {{ s.weight }}kg
           </div>

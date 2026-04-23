@@ -45,8 +45,11 @@ export class LogPage {
   selectedBodyPart = '';
   selectedExercise = '';
   loadingExercises = false;
+  savingWorkout = false;
   currentSet: WorkoutSet = { sets: 1, reps: 0, weight: 0 };
   workoutDays: DayGroup[] = [];
+  nearbyLocation = '';
+  loadingLocation = false;
 
   constructor(
     private foodService: FoodService,
@@ -57,6 +60,13 @@ export class LogPage {
     await this.loadLog();
     await this.loadWorkouts();
     if (this.bodyParts.length === 0) this.loadBodyParts();
+    await this.detectLocation();
+  }
+
+  async detectLocation() {
+    this.loadingLocation = true;
+    this.nearbyLocation = await this.workoutService.getLocation();
+    this.loadingLocation = false;
   }
 
   async loadLog() {
@@ -106,19 +116,22 @@ export class LogPage {
 
   async saveWorkout() {
     if (!this.selectedExercise) return;
+    this.savingWorkout = true;
     const ex = this.exercises.find(e => e.name === this.selectedExercise);
     const entry: WorkoutEntry = {
       id: Date.now().toString(),
       exerciseName: this.selectedExercise,
       bodyPart: ex?.bodyPart || this.selectedBodyPart,
       sets: [{ ...this.currentSet }],
-      date: new Date().toDateString()
+      date: new Date().toDateString(),
+      location: this.nearbyLocation
     };
     await this.workoutService.saveWorkout(entry);
     this.currentSet = { sets: 1, reps: 0, weight: 0 };
     this.selectedExercise = '';
     this.selectedBodyPart = '';
     this.exercises = [];
+    this.savingWorkout = false;
     await this.loadWorkouts();
   }
 
