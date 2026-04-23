@@ -4,9 +4,6 @@
       <ion-back-button defaultHref="/dashboard"></ion-back-button>
     </ion-buttons>
     <ion-title>Search Food</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="takePhoto()" fill="clear">Camera</ion-button>
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -18,10 +15,6 @@
   </ion-searchbar>
 
   <ion-button expand="block" (click)="search()">Search</ion-button>
-
-  <div *ngIf="photoUrl" class="photo-preview">
-    <img [src]="photoUrl" alt="Food photo" />
-  </div>
 
   <ion-spinner *ngIf="loading" name="crescent" class="ion-margin"></ion-spinner>
 

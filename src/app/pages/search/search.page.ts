@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonSearchbar, IonList, IonItem, IonLabel, IonButton, IonSpinner, IonBackButton, IonButtons, IonListHeader } from '@ionic/angular/standalone';
 import { FoodService, FoodItem } from '../../services/food.service';
-import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 interface CommonFood {
   name: string;
@@ -27,7 +26,6 @@ export class SearchPage {
   loading = false;
   added: number[] = [];
   quantities: number[] = [];
-  photoUrl: string | null = null;
   commonAdded: number[] = [];
 
   commonFoods: CommonFood[] = [
@@ -62,44 +60,34 @@ export class SearchPage {
     });
   }
 
-  async takePhoto() {
-    const image = await Camera.getPhoto({
-      quality: 90,
-      allowEditing: false,
-      resultType: CameraResultType.DataUrl,
-      source: CameraSource.Camera
-    });
-    this.photoUrl = image.dataUrl ?? null;
+  async addFood(product: any, index: number) {
+    const quantity = this.quantities[index] || 100;
+    const n = product.nutriments;
+    const factor = quantity / 100;
+    const item: FoodItem = {
+      name: product.product_name,
+      calories: Math.round((n['energy-kcal_100g'] || 0) * factor),
+      protein: Math.round((n['proteins_100g'] || 0) * factor),
+      fat: Math.round((n['fat_100g'] || 0) * factor),
+      carbs: Math.round((n['carbohydrates_100g'] || 0) * factor),
+      quantity,
+      meal: 'Uncategorised'
+    };
+    await this.foodService.addToLog(item);
+    this.added.push(index);
   }
 
-async addFood(product: any, index: number) {
-  const quantity = this.quantities[index] || 100;
-  const n = product.nutriments;
-  const factor = quantity / 100;
-  const item: FoodItem = {
-    name: product.product_name,
-    calories: Math.round((n['energy-kcal_100g'] || 0) * factor),
-    protein: Math.round((n['proteins_100g'] || 0) * factor),
-    fat: Math.round((n['fat_100g'] || 0) * factor),
-    carbs: Math.round((n['carbohydrates_100g'] || 0) * factor),
-    quantity,
-    meal: 'Uncategorised'
-  };
-  await this.foodService.addToLog(item);
-  this.added.push(index);
-}
-
-async addCommonFood(food: CommonFood, index: number) {
-  const item: FoodItem = {
-    name: food.name,
-    calories: food.calories,
-    protein: food.protein,
-    fat: food.fat,
-    carbs: food.carbs,
-    quantity: food.serving,
-    meal: 'Uncategorised'
-  };
-  await this.foodService.addToLog(item);
-  this.commonAdded.push(index);
-}
+  async addCommonFood(food: CommonFood, index: number) {
+    const item: FoodItem = {
+      name: food.name,
+      calories: food.calories,
+      protein: food.protein,
+      fat: food.fat,
+      carbs: food.carbs,
+      quantity: food.serving,
+      meal: 'Uncategorised'
+    };
+    await this.foodService.addToLog(item);
+    this.commonAdded.push(index);
+  }
 }
