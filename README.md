@@ -1,11 +1,12 @@
 App Description
 https://github.com/SeanRaymond03/FrontEndDevelopment/wiki
+https://github.com/SeanRaymond03/FrontEndDevelopment/wiki/Architecture
 
 CalTrack User Guide
 
 Overview CalTrack is a PWA built with Ionic 7 and Angular for tracking calories, macros and workouts.
 
-Installation Clone the repository, run npm install, then ionic serve. Open http://localhost:8100.
+*Installation Clone the repository, run npm install, then ionic serve. Open http://localhost:8100.*
 
 Dashboard Shows daily calorie total, progress bar, macro pie chart, monthly activity calendar and gym streak tracker.
 
@@ -24,5 +25,18 @@ Data Persistence @ionic/storage-angular stores all logs and settings. Food log r
 *Known Limitations Foursquare gym search requires a deployed environment. ExerciseDB may be slow on free tier rate limits.*
 
 <img width="1917" height="1960" alt="image" src="https://github.com/user-attachments/assets/e31edc20-cff0-4293-aa55-c9457edc087c" />
+
 <img width="1897" height="1959" alt="image" src="https://github.com/user-attachments/assets/5d85d4ab-ceb7-41f7-89cf-43a1836d1b25" />
+
 <img width="1906" height="1945" alt="image" src="https://github.com/user-attachments/assets/8634c1ef-8076-4dbe-8309-7e2104a9e72f" />
+
+
+Architecture
+
+Pages Dashboard displays calories, macros, calendar and streaks. Search handles food lookup and common foods. Log manages food entries, meal categories, drag and drop and workout logging. Settings handles user goals and appearance.
+
+Services FoodService handles Open Food Facts API, storage, macro totals and daily reset. WorkoutService handles ExerciseDB API, geolocation, Foursquare API, workout storage and streak calculation.
+
+Angular Features Used Standalone components, Angular Router with lazy loading, two-way data binding via ngModel, interpolation, HttpClient with Observable and provideHttpClient, ionViewWillEnter lifecycle hook.
+
+Storage Keys food_log, last_log_date, user_goals, workouts, dark_mode, font_size. All stored via IonicStorageModule.
